@@ -16,3 +16,5 @@ This repository provides codes related to [Bernanke and Blanchard (2023)](https:
 ## Results
 
 This work makes two main contributions. Firstly, I propose an extension of the empirical model introduced by Bernanke and Blanchard (2023) to account for fiscal policy. Determining endogenously the state of supply chains I show that its pure contribution to inflation is small and that it was mediating a demand component attributable to accommodating fiscal policy. Through an historical decomposition I estimate this fiscal component to sum to 2.28 percentage points of price inflation over the period 2020Q1:2023Q1. I interpret this result within a standard AS-AD framework with supply constraints. Secondly, I provide a R replication package for all the results of Bernanke and Blanchard (2023). I integrated the possibility to derive confidence intervals for the responses of price inflation implied by the standard model through bootstrapping. I show these are generally not statistically different from zero.
+
+![symbol](decomps.pdf)
