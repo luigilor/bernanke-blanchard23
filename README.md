@@ -13,4 +13,6 @@ This repository provides codes related to [Bernanke and Blanchard (2023)](https:
 * [bl_be_us_fiscal.R](code/bl_be_us_fiscal.R) proposes a "fiscal extension" of the model
 * [bl_be_us_fiscal_boot.R](code/bl_be_us_fiscal_boot.R) derives the extended model implied responses of price inflation with confidence intervals
 
-## Paper
+## Results
+
+This work makes two main contributions. Firstly, I propose an extension of the empirical model introduced by Bernanke and Blanchard (2023) to account for fiscal policy. Determining endogenously the state of supply chains I show that its pure contribution to inflation is small and that it was mediating a demand component attributable to accommodating fiscal policy. Through an historical decomposition I estimate this fiscal component to sum to 2.28 percent- age points of price inflation over the period 2020Q1:2023Q1. I interpret this result within a standard AS-AD framework with supply constraints. Secondly, I provide a R replication pack- age for all the results of Bernanke and Blanchard (2023). I integrated the possibility to derive confidence intervals for the responses of price inflation implied by the standard model through bootstrapping. I show these are generally not statistically different from zero.
