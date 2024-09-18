@@ -9,7 +9,7 @@ This repository provides codes related to Bernanke and Blanchard (2023). Firstly
 ## Code
 * [bl_be_us.R](empirics/code/bl_be_us.R) provides the standard replication of the paper
 * [bl_be_us_boot.R](empirics/code/bl_be_us_boot.R) provides the replication of model implied price inflation responses with confidence intervals
-* [bl_be_us_fiscal.R](empirics/code/bl_be_us_fiscal.R) proposes the extension of the model
+* [bl_be_us_fiscal.R](empirics/code/bl_be_us_fiscal.R) proposes a "fiscal extension" of the model
 * [bl_be_us_fiscal_boot.R](empirics/code/bl_be_us_fiscal_boot.R) derives the extended model implied responses of price inflation with confidence intervals
 
 ## Paper
