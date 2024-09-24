@@ -1020,21 +1020,6 @@ ggplot(data_long, aes(x = dates, y = value, fill = variable)) +
 
 ggsave(here("output","output_us", "graphs_us",paste0("gw_decomp_us.png")), width = 10, height = 8, dpi = 320)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 dates <-seq(as.Date("2020-01-01"),length=13, by="quarters")
 tsdata<-readRDS(file=here("data", "tsdata_us.rds"))
 tsdata<-tsdata[121:133]
