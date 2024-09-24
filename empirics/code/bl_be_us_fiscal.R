@@ -1,4 +1,5 @@
-#Bernanke and Blanchard(2023): "What Caused U.S. Postpandemic Inflation?" fiscal extension.
+#What Caused U.S. Postpandemic Inflation? A Fiscal Extension of Bernanke and Blanchard (2023)
+#Fiscal extension
 #Author: Luigi Lorenzoni
 #This version: 17/09/24
 
