@@ -1,7 +1,7 @@
 #What Caused U.S. Postpandemic Inflation? A Fiscal Extension of Bernanke and Blanchard (2023)
 #Fiscal extension of Bernanke-Blanchard(2023) with bootstrapped confidence intervals
 #Author: Luigi Lorenzoni
-#This version: 17/09/24
+#This version: 04/07/25
 
 ################################################### PREPARATION ####################################################################
 
