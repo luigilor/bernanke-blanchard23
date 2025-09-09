@@ -1,6 +1,6 @@
-# _What Caused U.S. Postpandemic Inflation? A Fiscal Extension of Bernanke and Blanchard (2023)_
+# _What Caused U.S. Postpandemic Inflation? A Fiscal Extension of Bernanke and Blanchard (2025)_
 ### [Luigi Lorenzoni](mailto:luigi.lorenzoni@studbocconi.it?subject=[GitHub]%Bernanke%20Blanchard%20)
-This repository provides codes related to [Bernanke and Blanchard (2023)](https://www.brookings.edu/wp-content/uploads/2023/04/bernanke-blanchard-conference-draft_5.23.23.pdf). Firstly, I provide a replication package in R for all the results of the paper. Secondly, I provide the code for a fiscal extension of their empirical model,which constitutes the core of my [undergraduate thesis](https://www.dropbox.com/scl/fi/kuvh9tqna1qzvpjmh2lcb/lorenzoni25.pdf?rlkey=5ehbnunn7bmnwgop8rnmb1pzy&dl=0) (conditionally accepted at [_Bocconi Economic Journal_](https://bej.egeaonline.it/en/home)).
+This repository provides codes related to [Bernanke and Blanchard (2025)]([https://www.brookings.edu/wp-content/uploads/2023/04/bernanke-blanchard-conference-draft_5.23.23.pdf](https://www.aeaweb.org/articles?id=10.1257/mac.20230195)). Firstly, I provide a replication package in R for all the results of the paper. Secondly, I provide the code for a fiscal extension of their empirical model,which constitutes the core of my [undergraduate thesis](https://www.dropbox.com/scl/fi/kuvh9tqna1qzvpjmh2lcb/lorenzoni25.pdf?rlkey=5ehbnunn7bmnwgop8rnmb1pzy&dl=0) (conditionally accepted at [_Bocconi Economic Journal_](https://bej.egeaonline.it/en/home)).
 
 ## Data
 * [data_us.csv](empirics/data/data_us.csv) is the dataset I import into my code. It is drawn from the replication package provided by Bernanke and Blanchard with the addition of the fiscal variable
