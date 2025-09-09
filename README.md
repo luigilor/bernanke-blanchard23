@@ -10,8 +10,9 @@ This repository provides codes related to [Bernanke and Blanchard (2023)](https:
 ## Code
 * [master.R](empirics/code/master.R) is the master script which sources all the following scripts
 * [bl_be_us.R](empirics/code/bl_be_us.R) provides the standard replication of the paper
+* [bl_be_us_25.R](empirics/code/bl_be_us_25.R) provides the updated replication of the paper
 * [bl_be_us_boot.R](empirics/code/bl_be_us_boot.R) provides the replication of model implied price inflation responses with confidence intervals
-* [bl_be_us_fiscal.R](empirics/code/bl_be_us_fiscal.R) proposes a "fiscal extension" of the model
+* [bl_be_us_fiscal.R](empirics/code/bl_be_us_fiscal.R) proposes a "fiscal extension" of the model (which uses data up to 2025Q1).
 * [bl_be_us_fiscal_boot.R](empirics/code/bl_be_us_fiscal_boot.R) derives the extended model implied responses of price inflation with confidence intervals
 
 ## Results
