@@ -1,5 +1,4 @@
-#What Caused U.S. Postpandemic Inflation? A Fiscal Extension of Bernanke and Blanchard (2023)
-#Fiscal extension
+#Bernanke and Blanchard(2023): "What Caused U.S. Postpandemic Inflation?" fiscal extension.
 #Author: Luigi Lorenzoni
 #This version: 17/09/24
 
@@ -20,8 +19,9 @@ for (j in listofpackages){
 setwd(here())
 
 #data import and cleaning
-data <- read.csv2(here("data", "data_us.csv"), header = TRUE) 
+data <- read.csv2(here("data", "data_us_new.csv"), header = TRUE) 
 data<-data[,-1]
+length_sim<-21
 
 #relative prices
 data$rpf<-data$food_cpi/data$lci
@@ -36,7 +36,7 @@ data$logrpe<-log(data$rpe)
 data$logproductivity<-log(data$productivity)
 
 #prep
-dates <-seq(as.Date("1986-10-01"),length=146, by="quarters")
+dates <-seq(as.Date("1986-10-01"),length=nrow(data), by="quarters")
 params <- c("logcpi", "loglci", "logrpe", "logrpf", "logproductivity" )
 
 #first lags of raw data
@@ -44,6 +44,10 @@ for (param in params){
   lagged_col<-paste0(param,"_l",1)
   print(paste0("generating ", lagged_col))
   data[[lagged_col]]<-lag.xts(data[[param]], k=1)
+}
+
+quarter_format <- function(x) {
+  paste0(format(x, "%Y"), "Q", ceiling(as.numeric(format(x, "%m")) / 3))
 }
 
 #growth rates/catch-up creation according to BL-BE replication package
@@ -67,16 +71,17 @@ ggplot(data, aes(x = dates, y=fiscal)) +
   labs(title=" ", x = "Date", y = "Fiscal deficit/surplus (% of GDP)") +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.15, 0.15),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
     values = c("royalblue4", "deeppink4", "forestgreen"),
     labels = c("original", "adjustment X13", "rolling mean")
+    
   )
 
 ggsave(here("output","fiscal", "fiscal_us.png"), width = 10, height = 8, dpi = 300)
@@ -90,9 +95,9 @@ ggplot(data, aes(x = dates, y=fiscal)) +
   theme(
     legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -125,7 +130,7 @@ tsdata$catch_up_l3<-lag.xts(tsdata$catch_up, k=3)
 tsdata$catch_up_l4<-lag.xts(tsdata$catch_up, k=4)
 
 #data clean
-dates<-seq(as.Date("1990-01-01"),length=133, by="quarters")
+dates<-seq(from=as.Date("1990-01-01"),to=as.Date("2025-01-01"), by="quarters")
 tsdata <- tsdata[which(index(tsdata)=="1990-01-01"):nrow(tsdata)]
 tsdata<-tsdata[,! colnames(tsdata) %in% c("cpi", "lci", "rpe", "rpf")]
 saveRDS(tsdata, file=here("data", "tsdata_us.rds"))
@@ -230,9 +235,9 @@ ggtitle("Shortage equation") +
 theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "top",
         legend.title = element_blank(),
-        legend.text = element_text(size = 8),
-        axis.text = element_text(size = 8),
-        axis.title = element_text(size = 10),
+        legend.text = element_text(size = 12),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 12),
         plot.title = element_text(size = 12, hjust = 0.5)) +
     scale_shape_manual(name = "Point Type", values = c("OLS" = 0)) +
     scale_color_manual(name = "Point Type", values = c("OLS" = "blue"))
@@ -344,7 +349,7 @@ simulation<-function(tsdata, tsdata_out, position, s, C_gp, C_gw, C_exp1, C_exp1
   return(tsdata)
 }
 
-length_sim=13
+length_sim=21
 start_date<- as.Date("2020-01-01") #which date?
 dates<-seq(start_date,length=length_sim, by="quarters")
 position <- which(index(tsdata) == start_date)
@@ -368,7 +373,7 @@ for (s in (2:5)){ #iterate function over shock types
   tsdata$shortage_f<-NA
   tsdata$fiscal_f<-NA
   
-  length_sim=13
+  length_sim=21
   start_date<- as.Date("2020-01-01") #which date?
   dates<-seq(start_date,length=length_sim, by="quarters")
   position <- which(index(tsdata) == start_date)
@@ -407,19 +412,19 @@ tsdata_out1<-readRDS(here("data", "tsdata_out_us.RDS"))
 
 shock_time<-(1:length_sim)
 
-dates <-seq(as.Date("2020-01-01"),length=13, by="quarters")
+dates <-seq(from=as.Date("2020-01-01"),to=as.Date("2025-01-01"), by="quarters")
 
-ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
+ggplot(tsdata[121:141], aes(x = dates, y=gp)) +
   geom_line(aes(y = shortage, color = "BA"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out$shortage_f, color = "VaR"), linewidth = 1, linetype = "solid") +
   labs(title="", x = "Date", y = "Inflation") +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.70, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 18),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -429,7 +434,7 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
 
 ggsave(here("output","fiscal",paste0("shortage_forecast_us_fiscal.png")), width = 10, height = 8, dpi = 320)
 
-ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
+ggplot(tsdata[121:141], aes(x = dates, y=gp)) +
   geom_line(aes(y = gp, color = "BA"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out$gp_f_baseline, color = "VaR"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out1$gp_f_baseline, color = "fiscal"), linewidth = 1, linetype = "solid") +
@@ -437,11 +442,11 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
   ylim(-2, 12) +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.70, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -451,7 +456,7 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
 
 ggsave(here("output","fiscal",paste0("gp_forecast_us_fiscal.png")), width = 10, height = 8, dpi = 320)
 
-ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
+ggplot(tsdata[121:141], aes(x = dates, y=gp)) +
   geom_line(aes(y = gw, color = "BA"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out$gw_f_baseline, color = "VaR"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out1$gw_f_baseline, color = "fiscal"), linewidth = 1, linetype = "solid") +
@@ -459,11 +464,11 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
   ylim(-2, 12) +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.70, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -473,7 +478,7 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
 
 ggsave(here("output","fiscal",paste0("gw_forecast_us_fiscal.png")), width = 10, height = 8, dpi = 320)
 
-ggplot(tsdata[121:133], aes(x = dates, y=exp1)) +
+ggplot(tsdata[121:141], aes(x = dates, y=exp1)) +
   geom_line(aes(y = exp1, color = "BA"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out$exp1_f_baseline, color = "VaR"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out1$exp1_f_baseline, color = "fiscal"), linewidth = 1, linetype = "solid") +
@@ -481,11 +486,11 @@ ggplot(tsdata[121:133], aes(x = dates, y=exp1)) +
   ylim(0, 5) +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.70, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 16),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -495,7 +500,7 @@ ggplot(tsdata[121:133], aes(x = dates, y=exp1)) +
 
 ggsave(here("output","fiscal",paste0("exp1_forecast_us_fiscal.png")), width = 10, height = 8, dpi = 320)
 
-ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
+ggplot(tsdata[121:141], aes(x = dates, y=gp)) +
   geom_line(aes(y = exp10, color = "BA"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out$exp10_f_baseline, color = "VaR"), linewidth = 1, linetype = "solid") +
   geom_line(aes(y = tsdata_out1$exp10_f_baseline, color = "fiscal"), linewidth = 1, linetype = "solid") +
@@ -503,11 +508,11 @@ ggplot(tsdata[121:133], aes(x = dates, y=gp)) +
   ylim(1, 2.5) +
   theme_minimal() +
   theme(
-    legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
+    legend.position = c(0.70, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 12),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 15),
+    axis.text = element_text(size = 16),
+    axis.title = element_text(size = 16),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -524,9 +529,9 @@ ggplot(tsdata_out, aes(x = shock_time, y=response)) +
   theme(
     legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 18),
+    axis.text = element_text(size = 18),
+    axis.title = element_text(size = 18),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -543,9 +548,9 @@ ggplot(tsdata_out, aes(x = shock_time, y=response)) +
   theme(
     legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 12),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 12),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -562,9 +567,9 @@ ggplot(tsdata_out, aes(x = shock_time, y=response)) +
   theme(
     legend.position = c(0.15, 0.95),  # Set the legend position (top-left)
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 12),
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 12),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_color_manual(
@@ -704,7 +709,7 @@ simulation<-function(tsdata, tsdata_out, position, s, C_gp, C_gw, C_exp1, C_exp1
   return(tsdata_out)
 }
 
-length_sim=13
+length_sim=21
 start_date<- as.Date("2020-01-01") #which date?
 dates<-seq(start_date,length=length_sim, by="quarters")
 position <- which(index(tsdata) == start_date)
@@ -731,7 +736,7 @@ for (s in (2:9)){
   tsdata$shortage_f<-NA
   tsdata$fiscal_f<-NA
   
-  length_sim=13
+  length_sim=21
   start_date<- as.Date("2020-01-01") #which date?
   dates<-seq(start_date,length=length_sim, by="quarters")
   position <- which(index(tsdata) == start_date)
@@ -759,7 +764,7 @@ tsdata_out$gp_fiscal<-tsdata_out$gp_real-tsdata_out$gp_fiscal
 tsdata_out$gp_short<-tsdata_out$gp_real-tsdata_out$gp_short-tsdata_out$gp_fiscal
 tsdata_out$gp_vu<-tsdata_out$gp_real-tsdata_out$gp_vu
 tsdata_out$gp_prod<-tsdata_out$gp_real-tsdata_out$gp_prod
-tsdata_out$gp_real<-tsdata$gp[121:133]
+tsdata_out$gp_real<-tsdata$gp[121:141]
 
 
 tsdata_out$gw_energy<-tsdata_out$gw_real-tsdata_out$gw_energy
@@ -768,7 +773,7 @@ tsdata_out$gw_short<-tsdata_out$gw_real-tsdata_out$gw_short
 tsdata_out$gw_vu<-tsdata_out$gw_real-tsdata_out$gw_vu
 tsdata_out$gw_prod<-tsdata_out$gw_real-tsdata_out$gw_prod
 tsdata_out$gw_fiscal<-tsdata_out$gw_real-tsdata_out$gw_fiscal
-tsdata_out$gw_real<-tsdata$gw[121:133]
+tsdata_out$gw_real<-tsdata$gw[121:141]
 tsdata_out$dates<-dates
 
 tsdata_df <- data.frame(dates = index(tsdata_out), coredata(tsdata_out))
@@ -792,15 +797,16 @@ ggplot(data_long, aes(x = dates, y = value, fill = variable)) +
   theme_minimal() +
   theme(
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
+    legend.text = element_text(size = 12),
     axis.text = element_text(size = 14),
-    axis.title = element_text(size = 10),
+    axis.title = element_text(size = 12),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_fill_manual(values = c("gp_prod"="forestgreen" ,"gp_init" = "gray36","gp_energy" = "royalblue4", "gp_food" = "orange2", 
                                "gp_short" = "darkslategray3",  "gp_vu" = "orangered3", "gp_fiscal"= "darkorchid"),
                     labels = c("gp_prod"="Productivity","gp_energy" = "Energy", "gp_food" = "Food", 
-                               "gp_short" = "Shortages", "gp_init" = "Initial Conditions", "gp_vu" = "V/U", "gp_fiscal"="Fiscal surplus/defict (via shortages)"))
+                               "gp_short" = "Shortages", "gp_init" = "Initial Conditions", "gp_vu" = "V/U", "gp_fiscal"="Fiscal surplus/deficit 
+(via shortages)"))
 
 ggsave(here("output","fiscal", paste0("gp_decomp_us_fiscal_shortages.png")), width = 10, height = 8, dpi = 320)
 
@@ -825,9 +831,9 @@ ggplot(data_long, aes(x = dates, y = value, fill = variable)) +
   theme_minimal() +
   theme(
     legend.title = element_blank(),
-    legend.text = element_text(size = 8),
+    legend.text = element_text(size = 12),
     axis.text = element_text(size = 14),
-    axis.title = element_text(size = 10),
+    axis.title = element_text(size = 12),
     plot.title = element_text(size = 12, hjust = 0.5)
   ) +
   scale_fill_manual(values = c("gw_prod"="forestgreen" ,"gw_init" = "gray36","gw_energy" = "royalblue4", "gw_food" = "orange2", 
