@@ -325,7 +325,7 @@ summary(sys_unr)
 
 #restricted estimation by specified method, lag 4 
 #separate estimations for two reasons: (i) systemfit does not support data subsetting (ii) exporting of tables
-
+#matrix left here to help build intuition
 # restrictM_l4 <- matrix(c(0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 
 #                          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 #                          0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1),
