@@ -4,6 +4,7 @@ This repository provides codes related to [Bernanke and Blanchard (2023)](https:
 
 ## Data
 * [data_us.csv](empirics/data/data_us.csv) is the dataset I import into my code. It is drawn from the replication package provided by Bernanke and Blanchard with the addition of the fiscal variable
+* [data_us_new.csv}(empirics/data/data_us_new.csv) is the dataset updated up to 2025Q1.
 * [auxil](auxil) provides some useful auxiliary files for the output
 
 ## Code
